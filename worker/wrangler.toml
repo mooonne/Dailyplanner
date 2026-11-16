@@ -1,0 +1,34 @@
+# 오늘의 나 API (Cloudflare Worker + D1)
+# main 브랜치 -> 운영 서버 today-me-api
+# dev 브랜치  -> 개발 서버 today-me-api-dev (wrangler deploy --env dev)
+
+name = "today-me-api"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+[vars]
+VAPID_SUBJECT = "https://today-me-ad0.pages.dev"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "today-me-db"
+database_id = "014719ce-36d1-4cfe-a78e-c34d7dfa6ed5"
+
+[triggers]
+crons = ["*/30 * * * *"]
+
+[env.dev]
+name = "today-me-api-dev"
+workers_dev = true
+
+[env.dev.vars]
+VAPID_SUBJECT = "https://dev.today-me-ad0.pages.dev"
+
+[[env.dev.d1_databases]]
+binding = "DB"
+database_name = "today-me-db-dev"
+database_id = "03f4f8ae-f0ba-4461-b702-6884d733c36d"
+
+[env.dev.triggers]
+crons = ["*/30 * * * *"]
